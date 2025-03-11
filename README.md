@@ -1,2 +1,2 @@
 # Linux_Kernel
- basics of Linux Kernel Architecture, Device Drivers, and Memory Management
+ Basics of Linux Kernel Architecture, Device Drivers, and Memory Management
