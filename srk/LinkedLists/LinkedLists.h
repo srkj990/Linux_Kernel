@@ -8,9 +8,9 @@ typedef struct Node
     struct Node *next;
 }Node;
 
-extern Node *CreatenewNode(int data);
-extern void PrintLinkedList(Node *printNode);
-extern Node* ReverseLinkedList(Node *reverseNode);
-extern Node *insertAtFront(Node *headNode, int data);
-extern Node *insertAtEnd(Node *headNode, int data);
-extern Node *insertAtPosition(Node *headNode, int data, int position);
+Node *CreatenewNode(int data);
+void PrintLinkedList(Node *printNode);
+Node* ReverseLinkedList(Node *reverseNode);
+Node *insertAtFront(Node *headNode, int data);
+Node *insertAtEnd(Node *headNode, int data);
+Node *insertAtPosition(Node *headNode, int data, int position);

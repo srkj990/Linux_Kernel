@@ -2,4 +2,4 @@
 #include <stdlib.h>
 
 //Reverse a string
-extern char* reverse_string(char *str);
+char* reverse_string(char *str);
