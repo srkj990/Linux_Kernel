@@ -1,17 +1,17 @@
 
 
-#include "Stack.h"
+#include "stack.h"
 
-Stack * createStack(int cap)
+Stack_Array * createStack(int cap)
 {
     printf("Created a stack with capacity %d\n", cap);
-    Stack * stack = (Stack *)malloc(sizeof(Stack));
+    Stack_Array * stack = (Stack_Array *)malloc(sizeof(Stack));
     stack->cap = cap;
     stack->top = -1;
     stack->array = (int *)malloc(cap * sizeof(int));
     return stack;
 }
-void printStackElements(Stack * stack)
+void printStackElements(Stack_Array * stack)
 {
     if(stack->top < 0)
     {
@@ -27,7 +27,7 @@ void printStackElements(Stack * stack)
         printf("\n");
     }
 }
-int push(Stack *stack, int data)
+int push(Stack_Array *stack, int data)
 {
     if (stack->top == (stack->cap - 1))
     {
@@ -42,7 +42,7 @@ int push(Stack *stack, int data)
     }
     return data;
 }
-int pop(Stack *stack)
+int pop(Stack_Array *stack)
 {
     if (stack->top < 0)
     {
