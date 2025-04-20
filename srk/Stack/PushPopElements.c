@@ -2,7 +2,7 @@
 
 int main()
 {
-    Stack *newStack = createStack(5);
+    Stack_Array *newStack = createStack(5);
 
     push(newStack, 100);         printStackElements(newStack);
     push(newStack, 200);         printStackElements(newStack);

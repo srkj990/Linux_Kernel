@@ -12,7 +12,11 @@ int main()
     
     PrintLinkedList(current);
     
-    PrintLinkedList(ReverseLinkedList(current));
+    current = ReverseLinkedList(current);
+    PrintLinkedList(current);
+
+    head = deleteNode(current, 2);
+    PrintLinkedList(head);
     
     return 0;
 }

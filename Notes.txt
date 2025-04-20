@@ -1,0 +1,193 @@
+Synchronization Mechanism	- Use Case
+pthread_mutex_t	            - Protect shared resources (e.g., shared counter) from race conditions.
+pthread_cond_t	            - Synchronize threads based on conditions (e.g., allow only one thread at a time).
+pthread_barrier_t	        - Ensure all threads reach a common point before proceeding further.
+
+
+Data Types:
+Definitions for thread IDs, mutexes, condition variables, and other related data structures.
+pthread_t       : Thread identifier.
+pthread_mutex_t : Mutex.
+pthread_cond_t  : Condition variable.
+
+A. Thread Creation and Management:
+
+    1. pthread_create(): Creates a new thread.
+        
+        int pthread_create(pthread_t *thread, pthread_attr_t *attr, void *(*start_routine)(void*), void *arg);
+            
+            thread: A pointer to a pthread_t variable that will store the ID of the newly created thread.
+            
+            attr: A pointer to a pthread_attr_t structure that defines the attributes of the new thread. If NULL, default attributes are used.
+            
+            start_routine: A function pointer to the routine that the new thread will execute.
+            
+            arg: A pointer to the argument that will be passed to the start_routine function.
+
+        Example :
+
+            #include <pthread.h>
+
+            void* my_thread_function(void* arg) {
+                // Thread code here
+                return NULL;
+            }
+
+            int main() {
+                pthread_t thread;
+                pthread_create(&thread, NULL, my_thread_function, NULL);
+                return 0;
+            }
+
+    2. pthread_join(): Waits for a thread to terminate.
+        
+        int pthread_join(pthread_t thread, void **retval);
+            
+            thread: The ID of the thread to wait for.
+            
+            retval: A pointer to a void* variable that will store the return value of the thread.
+
+        Example: 
+
+            #include <pthread.h>
+
+            void* my_thread_function(void* arg) 
+            {
+                // Thread code here
+                printf("Thread running on core %ld\n", (long)arg);
+                return NULL;
+            }
+
+            int main() 
+            {
+                pthread_t thread;
+                pthread_create(&thread, NULL, my_thread_function, NULL);
+                void* retval;
+                pthread_join(thread, &retval);
+                return 0;
+            }
+    3. pthread_exit(): Terminates the calling thread.
+
+        void pthread_exit(void *retval);
+            
+            retval: A pointer to the return value of the thread.
+
+        Example : 
+
+            #include <pthread.h>
+
+            void* my_thread_function(void* arg) 
+            {
+                // Thread code here
+                pthread_exit(NULL);
+                return NULL; // Not reached
+            }
+
+            int main() 
+            {
+                pthread_t thread;
+                pthread_create(&thread, NULL, my_thread_function, NULL);
+                return 0;
+            }
+
+    4. pthread_detach(): Detaches a thread, allowing its resources to be freed immediately upon termination.
+    
+        int pthread_detach(pthread_t thread);
+
+            thread: The ID of the thread to detach.
+        
+        Example : 
+
+            #include <pthread.h>
+
+            void* my_thread_function(void* arg) 
+            {
+                // Thread code here
+                return NULL;
+            }
+
+            int main() 
+            {
+                pthread_t thread;
+                pthread_create(&thread, NULL, my_thread_function, NULL);
+                pthread_detach(thread);
+                return 0;
+            }
+
+B. Mutexes (Mutual Exclusion Locks):    
+
+    Mutexes are used to protect shared resources from concurrent access by multiple threads.
+
+    1. pthread_mutex_init(): Initializes a mutex.
+
+        This function initializes a mutex, preparing it for use. It takes two arguments: 
+        a pointer to the mutex to be initialized and an attribute object that specifies the mutex's behavior.
+        
+        int pthread_mutex_init(pthread_mutex_t *mutex, const pthread_mutexattr_t *attr);
+
+    2. pthread_mutex_lock(): Acquires a lock on a mutex, blocking if it's already locked.
+
+        This function acquires a lock on a mutex, blocking the calling thread if the mutex is already locked by another thread. 
+        Once the lock is acquired, the mutex is considered "locked" and other threads will block if they try to lock it.
+
+        int pthread_mutex_lock(pthread_mutex_t *mutex);
+
+    3. pthread_mutex_unlock(): Releases a lock on a mutex.
+
+        This function releases a lock on a mutex, allowing other threads to acquire the lock.
+        If multiple threads are waiting for the lock, one of them will be unblocked and allowed to acquire the lock.
+
+        int pthread_mutex_unlock(pthread_mutex_t *mutex);
+
+    4. pthread_mutex_destroy(): Destroys a mutex.
+
+        This function destroys a mutex, releasing any system resources associated with it.
+        The mutex should not be used after it has been destroyed.
+
+        int pthread_mutex_destroy(pthread_mutex_t *mutex);
+
+C. Condition Variables:
+    
+    Condition variables are a synchronization mechanism in Pthreads that allow threads to wait for a specific condition to occur before proceeding with their execution.
+
+1. pthread_cond_init(): Initializes a condition variable.
+
+    int pthread_cond_init(pthread_cond_t *cond, const pthread_condattr_t *attr);int pthread_cond_init(pthread_cond_t *cond, const pthread_condattr_t *attr);int pthread_cond_init(pthread_cond_t *cond, const pthread_condattr_t *attr);
+
+
+2. pthread_cond_wait(): Blocks the calling thread until a condition is signaled.
+
+    int pthread_cond_wait(pthread_cond_t *cond, pthread_mutex_t *mutex);
+
+    This function blocks the calling thread until the condition variable cond is signaled. 
+    The mutex parameter is a mutex that must be locked by the calling thread before calling pthread_cond_wait(). 
+    The mutex is automatically unlocked while the thread is waiting, and it is relocked before the function returns.
+
+3. pthread_cond_signal(): Signals one thread waiting on a condition variable.
+4. pthread_cond_broadcast(): Signals all threads waiting on a condition variable.
+5. pthread_cond_destroy(): Destroys a condition variable.
+
+
+D. Thread Attributes:
+    Functions for setting and getting thread attributes, such as stack size and scheduling policy.
+    
+    1. pthread_attr_init(): Initializes a thread attribute object.
+    2. pthread_attr_destroy(): Destroys a thread attribute object.
+    3. pthread_attr_setdetachstate(): Sets the detach state of a thread attribute object.
+    4. pthread_attr_setstacksize(): Sets the stack size of a thread attribute object.
+    5. pthread_attr_getstacksize(): Gets the stack size of a thread attribute object.
+    6. pthread_attr_setstack(): Sets the stack address of a thread attribute object.
+    7. pthread_attr_getstack(): Gets the stack address of a thread attribute object.
+    8. pthread_attr_setguardsize(): Sets the guard size of a thread attribute object.
+    9. pthread_attr_getguardsize(): Gets the guard size of a thread attribute object.
+    10. pthread_attr_setinheritsched(): Sets the scheduling inheritance of a thread attribute object.
+    11. pthread_attr_getinheritsched(): Gets the scheduling inheritance of a thread attribute object.
+    12. pthread_attr_setschedpolicy(): Sets the scheduling policy of a thread attribute object.
+    13. pthread_attr_getschedpolicy(): Gets the scheduling policy of a thread attribute object.
+    14. pthread_attr_setschedparam(): Sets the scheduling parameter of a thread attribute object.
+    15. pthread_attr_getschedparam(): Gets the scheduling parameter of a thread attribute object.
+    16. pthread_attr_setscope(): Sets the thread creation scope of a thread attribute object.
+    17. pthread_attr_getscope(): Gets the thread creation scope of a thread attribute object.
+    18. pthread_attr_setstackaddr(): Sets the stack address of a thread attribute object.
+    19. pthread_attr_getstackaddr(): Gets the stack address of a thread attribute object.
+

@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "deque": "c",
+        "stack": "c",
+        "xlocinfo": "c",
+        "xstring": "c",
+        "xutility": "c",
+        "stack.h": "c",
+        "stdio.h": "c",
+        "atomic": "c"
+    }
+}

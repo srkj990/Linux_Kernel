@@ -20,6 +20,42 @@ void PrintLinkedList(Node *printNode)
         printNode = printNode->next;
     }
 }
+
+Node* deleteNode(Node* head, int position)
+{
+    Node* temp = head;
+    Node* prev = NULL;
+
+    // Base case if linked list is empty
+    if (temp == NULL)
+        return head;
+
+    // Case 1: Head is to be deleted
+    if (position == 1) {
+        head = temp->next;
+        free(temp);
+        return head;
+    }
+
+    // Case 2: Node to be deleted is in middle
+    // Traverse till given position
+    for (int i = 1; temp != NULL && i < position; i++) {
+        prev = temp;
+        temp = temp->next;
+    }
+
+    // If given position is found, delete node
+    if (temp != NULL) {
+        prev->next = temp->next;
+        free(temp);
+    }
+    else {
+        printf("Data not present\n");
+    }
+
+    return head;
+}
+
 Node *insertAtFront(Node *headNode, int data)
 {
     printf("Inserting %d at front\n",data);
